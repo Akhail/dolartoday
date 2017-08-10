@@ -10,19 +10,39 @@
     Copyright (c) 2017 MIT. All rights reserved.
 """
 
-
-import re
-import fontawesome as fa
+import sys
+import json
 from requests import get
 
-USD = fa.icons['usd']
-EUR = fa.icons['eur']
+import fontawesome as fa
+
+MONEY = fa.icons['money']
+DT = fa.icons['trademark']
+TRAN = fa.icons['cc-paypal']
+
+API = 'https://s3.amazonaws.com/dolartoday/data.json'
 
 def main():
-    data = str(get('https://dolartoday.com/').content)
-    money = re.findall(r'Bs. ([\d,]+)', data)
+    text = get(API).text
+    data = json.loads(text)['USD']
+    string = []
+    if 'e' in sys.argv:
+        tmp = MONEY + '  ' + str(data['efectivo']) + '  '
+        string.append(tmp)
 
-    print(f"{USD}: {money[0]}, {EUR}: {money[1]}")
+    if 'ec' in sys.argv or len(sys.argv) <= 1:
+        tmp = MONEY + 'C ' + str(data['efectivo_cucuta']) + '  '
+        string.append(tmp)
+
+    if 'dt' in sys.argv:
+        tmp = DT + '  ' + str(data['dolartoday']) + '  '
+        string.append(tmp)
+
+    if 'tf' in sys.argv:
+        tmp = TRAN + '  ' + str(data['transferencia']) + '  '
+        string.append(tmp)
+
+    print(' '.join(string))
 
 
 if __name__ == '__main__':
