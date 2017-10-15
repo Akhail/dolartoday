@@ -26,19 +26,19 @@ def main():
     text = get(API).text
     data = json.loads(text)['USD']
     string = []
-    if 'e' in sys.argv:
+    if 'e' in sys.argv or 'all' in sys.argv:
         tmp = MONEY + '  ' + str(data['efectivo']) + '  '
         string.append(tmp)
 
-    if 'ec' in sys.argv or len(sys.argv) <= 1:
+    if 'ec' in sys.argv or len(sys.argv) <= 1 or 'all' in sys.argv:
         tmp = MONEY + 'C ' + str(data['efectivo_cucuta']) + '  '
         string.append(tmp)
 
-    if 'dt' in sys.argv:
+    if 'dt' in sys.argv or 'all' in sys.argv:
         tmp = DT + '  ' + str(data['dolartoday']) + '  '
         string.append(tmp)
 
-    if 'tf' in sys.argv:
+    if 'tf' in sys.argv or 'all' in sys.argv:
         tmp = TRAN + '  ' + str(data['transferencia']) + '  '
         string.append(tmp)
 
